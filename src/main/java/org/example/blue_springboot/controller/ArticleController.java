@@ -18,7 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-@CrossOrigin(origins = "http://localhost:5178") // 允许跨域
+@CrossOrigin(origins = "http://localhost:5173") // 允许跨域
 
 @RestController
 @RequestMapping("/api/articles")
@@ -39,27 +39,14 @@ public class ArticleController implements WebMvcConfigurer {
         }
     }*/
 
-    @CrossOrigin(origins = "http://localhost:5178")
+    @CrossOrigin(origins = "http://localhost:5173")
     @PostMapping("/upload")
-    public ResponseEntity<Map<String, Object>> upload(
-            @RequestParam("title") String title,
-            @RequestParam("content") String content) {
-
+    public ResponseEntity<Map<String, Object>> upload(@RequestBody Article article) {
         Map<String, Object> response = new HashMap<>();
-
         try {
-            // 创建文章对象
-            Article article = new Article();
-            article.setTitle(title);
-            article.setContent(content);
-
-            // 保存文章
             articleRepository.save(article);
-
+            logger.info("文章已保存，ID: " + article.getId());
             response.put("message", "文章上传成功！");
-            response.put("title", article.getTitle());
-            response.put("content", article.getContent());
-
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             logger.error("上传失败: {}", e.getMessage());
@@ -88,7 +75,7 @@ public class ArticleController implements WebMvcConfigurer {
                 .orElse(ResponseEntity.status(404).body(null));
     }
 
-    @CrossOrigin(origins = "http://localhost:5178")
+    @CrossOrigin(origins = "http://localhost:5173")
     @PutMapping("/{id}")
     public ResponseEntity<String> updateArticle(
             @PathVariable Long id,
@@ -111,7 +98,7 @@ public class ArticleController implements WebMvcConfigurer {
         }).orElse(ResponseEntity.status(404).body("文章未找到"));
     }
 
-    @CrossOrigin(origins = "http://localhost:5178")
+    @CrossOrigin(origins = "http://localhost:5173")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteArticle(@PathVariable Long id) {
         if (articleRepository.existsById(id)) {
