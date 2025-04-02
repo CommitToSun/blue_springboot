@@ -18,7 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-@CrossOrigin(origins = "http://localhost:5173") // 允许跨域
+@CrossOrigin(origins = "http://localhost:5173") // 跨域
 
 @RestController
 @RequestMapping("/api/articles")
